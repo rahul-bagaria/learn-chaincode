@@ -447,7 +447,7 @@ func GetAllContract(ContractDate string, stub shim.ChaincodeStubInterface)([]Con
 	contractListBytes, err := stub.GetState(key)
 	if err != nil {
 		fmt.Println("Error retrieving contract List for Date" , ContractDate)
-		return contractsIds, errors.New("Error retrieving contract list for Date" + ContractDate)
+		return contracts, errors.New("Error retrieving contract list for Date" + ContractDate)
 	}
 	err = json.Unmarshal(contractListBytes, &contractsIds)
 	fmt.Println("Contract Ids   : " , contractsIds);

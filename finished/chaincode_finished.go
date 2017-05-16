@@ -439,7 +439,7 @@ func GetContract(contractID string, stub shim.ChaincodeStubInterface)(Contract, 
 
 func GetAllContract(ContractDate string, stub shim.ChaincodeStubInterface)([]Contract, error) {
 	fmt.Println("In query.GetAllContract start ")
-	key := "Contract_"+ContractDate
+	key := "contract_"+ContractDate
 	fmt.Println("Getting the contract for Date..." , key)
 	var contracts []Contract
 	var contractsIds ContractList
@@ -447,7 +447,7 @@ func GetAllContract(ContractDate string, stub shim.ChaincodeStubInterface)([]Con
 	contractListBytes, err := stub.GetState(key)
 	if err != nil {
 		fmt.Println("Error retrieving contract List for Date" , ContractDate)
-		return contracts, errors.New("Error retrieving contract list for Date" + ContractDate)
+		return contractsIds, errors.New("Error retrieving contract list for Date" + ContractDate)
 	}
 	err = json.Unmarshal(contractListBytes, &contractsIds)
 	fmt.Println("Contract Ids   : " , contractsIds);
@@ -944,7 +944,12 @@ func SignContract(signContractJSON string, stub shim.ChaincodeStubInterface) ([]
 					fmt.Println("Failed to create contract list ")
 				}
 				fmt.Println("Added contract to the list")
+			} else {
+				return nil,errors.New("Grid User not found or Grid Price is not Set")
 			}
+
+		} else {
+			return nil,errors.New("Energy Signed Amount is Zero")
 		}
 
 		energyRem := proposalEnergyRemInt - energySignedInt
@@ -975,6 +980,8 @@ func SignContract(signContractJSON string, stub shim.ChaincodeStubInterface) ([]
 		}
 		fmt.Println("Updated Proposal  with Key : "+ proposal.ProposalID)
 
+	} else {
+		return nil,errors.New("Proposal Id is Emply")
 	}
 	//}
 	fmt.Println("In initialize.SignContract end ")

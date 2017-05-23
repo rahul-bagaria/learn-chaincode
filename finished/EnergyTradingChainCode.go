@@ -1554,20 +1554,21 @@ func PerformSettlement(dateVal string, stub shim.ChaincodeStubInterface) ([]byte
 		t_con.ChangeInConsumerBalanceOld = t_con.ChangeInConsumerBalance
 		t_con.ChangeInPlatformBalanceOld = t_con.ChangeInPlatformBalance
 		platformCharge, _ := GetPlatformCharge("P001",stub)
-		platformChargeFloat := strconv.FormatFloat(platformCharge.Charge,'f', 2, 32)
-
+		platformChargeFloat ,_ := strconv.ParseFloat(platformCharge.Charge, 64);
+		var ChangeInPlatformBalance float64
 		if( ChangeInProducerBalance > 0 ){
 			ChangeInProducerBalance = ChangeInProducerBalance * ( 1 - platformChargeFloat )
-			t_con.ChangeInPlatformBalance = ChangeInProducerBalance * platformChargeFloat
+			ChangeInPlatformBalance = ChangeInProducerBalance * platformChargeFloat
 		} else {
 			ChangeInProducerBalance = ChangeInProducerBalance * ( 1 + platformChargeFloat )
-			t_con.ChangeInPlatformBalance = -1 * ChangeInProducerBalance * platformChargeFloat
+			ChangeInPlatformBalance = -1 * ChangeInProducerBalance * platformChargeFloat
 		}
 
 		t_con.ChangeInBatteryBalance = strconv.FormatFloat(ChangeInBatteryBalance,'f', 2, 32)
 		t_con.ChangeInProducerBalance = strconv.FormatFloat(ChangeInProducerBalance ,'f', 2, 32)
 		t_con.ChangeInGridBalance = strconv.FormatFloat(ChangeInGridBalance ,'f', 2, 32)
 		t_con.ChangeInConsumerBalance = strconv.FormatFloat(ChangeInConsumerBalance ,'f', 2, 32)
+		t_con.ChangeInPlatformBalance = strconv.FormatFloat(ChangeInPlatformBalance ,'f', 2, 32)
 		t_con.BatteryVolume = strconv.FormatFloat(val2 ,'f', 2, 32)
 		updatedContracts = append(updatedContracts , t_con)
 

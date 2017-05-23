@@ -1554,7 +1554,7 @@ func PerformSettlement(dateVal string, stub shim.ChaincodeStubInterface) ([]byte
 		t_con.ChangeInConsumerBalanceOld = t_con.ChangeInConsumerBalance
 		t_con.ChangeInPlatformBalanceOld = t_con.ChangeInPlatformBalance
 		platformCharge, _ := GetPlatformCharge("P001",stub)
-		platformChargeFloat := strconv.FormatFloat(platformCharge,'f', 2, 32)
+		platformChargeFloat := strconv.FormatFloat(platformCharge.Charge,'f', 2, 32)
 
 		if( ChangeInProducerBalance > 0 ){
 			ChangeInProducerBalance = ChangeInProducerBalance * ( 1 - platformChargeFloat )

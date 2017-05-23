@@ -336,6 +336,18 @@ func QueryDetails(stub shim.ChaincodeStubInterface, function string, args []stri
 		return json.Marshal(contracts)
 	}
 
+	if function == "GetAllProposal" {
+		fmt.Println("Invoking GetAllProposal " + function)
+		var proposals []Proposal
+		proposals,err := GetAllProposal(args[0], stub)
+		if err != nil {
+			fmt.Println("Error retrieving the proposals")
+			return nil, errors.New("Error retrieving the proposals")
+		}
+		fmt.Println("All success, returning All proposals")
+		return json.Marshal(proposals)
+	}
+
 	if function == "GetMeterReading" {
 		fmt.Println("Invoking GetMeterReading " + function)
 		var meterReading Meter
@@ -446,6 +458,24 @@ func GetContract(contractID string, stub shim.ChaincodeStubInterface)(Contract, 
 	return contracts, nil
 }
 
+
+func GetProposal(ProposalID string, stub shim.ChaincodeStubInterface)(Proposal, error) {
+	fmt.Println("In query.GetProposal start ")
+	key := ProposalID
+	fmt.Println("Getting the Proposal for ID..." , key)
+	var Proposals Proposal
+	ProposalBytes, err := stub.GetState(key)
+	if err != nil {
+		fmt.Println("Error retrieving Proposal" , ProposalID)
+		return Proposals, errors.New("Error retrieving Proposal" + ProposalID)
+	}
+	err = json.Unmarshal(ProposalBytes, &Proposals)
+	fmt.Println("Proposal   : " , Proposals);
+	fmt.Println("In query.GetProposal end ")
+	return Proposals, nil
+}
+
+
 func GetAllContract(ContractDate string, stub shim.ChaincodeStubInterface)([]Contract, error) {
 	fmt.Println("In query.GetAllContract start ")
 	key := "contract_"+ContractDate
@@ -491,7 +521,7 @@ func GetAllProposal(ProposalDate string, stub shim.ChaincodeStubInterface)([]Pro
 	fmt.Println("proposals Ids   : " , proposalIds);
 	for _, proposalId := range proposalIds {
 		fmt.Println("Getting Contract ",proposalId)
-		v_proposal,err := GetContract(proposalId, stub)
+		v_proposal,err := GetProposal(proposalId, stub)
 		if err != nil {
 			fmt.Println("Error retrieving the contract", proposalId)
 		} else {

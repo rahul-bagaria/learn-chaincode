@@ -1685,7 +1685,11 @@ func PerformSettlement(dateVal string, stub shim.ChaincodeStubInterface) ([]byte
 
 		platformBalanceFloat = platformBalanceFloat + changePlatformBalanceFloat - changePlatformBalanceOldFloat
 		platformUser.AccountBalance = strconv.FormatFloat(platformBalanceFloat, 'f', 6, 64)
-		SetPlatformCharge(string(platformUser),stub)
+		PlatformUpdate, err := json.Marshal(platformUser)
+		if err != nil {
+			panic(err)
+		}
+		SetPlatformCharge(string(PlatformUpdate),stub)
 		//Updating Platform Balance ends here
 
 		// Updating Consumer Balance

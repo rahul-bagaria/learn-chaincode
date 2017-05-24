@@ -30,7 +30,7 @@ type User struct{
 
 type GridPrice struct{
 	UserID string `json:"UserID"`
-	Date string `json:"Date"`
+	Date string `json:"Date"`	
 	Price string `json:"Price"`
 }
 
@@ -139,7 +139,7 @@ func (self *EnergyTradingChainCode) Init(stub shim.ChaincodeStubInterface, funct
 		fmt.Println("Initialization of User complete")
 		return userBytes, nil
 	}
-	fmt.Println("Initialization No functions found ")
+	fmt.Println("Initialization No functions found  ")
 	return nil, nil
 }
 

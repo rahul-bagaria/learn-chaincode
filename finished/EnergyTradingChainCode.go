@@ -30,7 +30,7 @@ type User struct{
 
 type GridPrice struct{
 	UserID string `json:"UserID"`
-	Date string `json:"Date"`	
+	Date string `json:"Date"`
 	Price string `json:"Price"`
 }
 
@@ -722,13 +722,13 @@ func SubmitProposal(proposalJSON string, stub shim.ChaincodeStubInterface) ([]by
 	}
 
 	fmt.Println("Proposal Price -->"+res.Price)
-	priceInt, errP := strconv.Atoi(res.Price);
+	priceInt, errP := strconv.ParseFloat(res.Price,64);
 	if errP != nil {
 		fmt.Println("Error converting price")
 		return nil, errors.New("Error converting price")
 	}
 
-	energyProposedInt, errEP := strconv.Atoi(res.EnergyProposed);
+	energyProposedInt, errEP := strconv.ParseFloat(res.EnergyProposed,64);
 	if errEP != nil {
 		fmt.Println("Error converting Energy proposed")
 		return nil, errors.New("Error converting Energy proposed")
@@ -736,14 +736,14 @@ func SubmitProposal(proposalJSON string, stub shim.ChaincodeStubInterface) ([]by
 
 	if(formattedDate.After(now) && priceInt > 0 && energyProposedInt > 0 && users.UserID != "")	{
 		var priceFloat float64
-		priceFloat = float64(priceInt)*1.1
+		priceFloat = priceInt*1.1
 		//var priceInt int64
-		gridPriceInt, errGP := strconv.Atoi(gridPrice.Price)
+		gridPriceInt, errGP := strconv.ParseFloat(gridPrice.Price,64)
 		if errGP != nil {
 			fmt.Println("Error converting grid price")
 			return nil, errors.New("Error converting grid price")
 		}
-		if(priceFloat > float64(gridPriceInt)){
+		if(priceFloat > gridPriceInt){
 			fmt.Println("Error - Price too high")
 			return nil, errors.New("Error - Price too high")
 		}
@@ -1192,7 +1192,7 @@ func MeterReading(meterReadingJSON string, stub shim.ChaincodeStubInterface) ([]
 	fmt.Println("Dates....")
 	fmt.Println(nowString)
 	fmt.Println(dateString)
-	energyAmtInt, errEM := strconv.Atoi(res.EnergyAmount);
+	energyAmtInt, errEM := strconv.ParseFloat(res.EnergyAmount,64);
 	if errEM != nil {
 		fmt.Println("Error converting Energy Amount")
 		return nil, errors.New("Error converting Energy Amount")
@@ -1229,13 +1229,13 @@ func MeterReading(meterReadingJSON string, stub shim.ChaincodeStubInterface) ([]
 			}
 			fmt.Println("Created Meter Reading  with Key : "+ res.EnergyReadingId)
 
-			energyConsInt, errEC := strconv.Atoi(users.EnergyConsumed);
+			energyConsInt, errEC := strconv.ParseFloat(users.EnergyConsumed,64);
 			if errEC != nil {
 				fmt.Println("Error converting Energy Consumed")
 				return nil, errors.New("Error converting Energy Consumed")
 			}
 
-			energyProdInt, errEP := strconv.Atoi(users.EnergyProduced);
+			energyProdInt, errEP := strconv.ParseFloat(users.EnergyProduced,64);
 			if errEP != nil {
 				fmt.Println("Error converting Energy Produced")
 				return nil, errors.New("Error converting Energy Produced")
@@ -1247,13 +1247,14 @@ func MeterReading(meterReadingJSON string, stub shim.ChaincodeStubInterface) ([]
 			if(energyAmtInt > 0){
 				energyConsumedVal := energyConsInt + energyAmtInt
 				energyProdVal := energyProdInt
-				users.EnergyConsumed = 	strconv.Itoa(energyConsumedVal)
-				users.EnergyProduced = 	strconv.Itoa(energyProdVal)
+				users.EnergyConsumed = 	strconv.FormatFloat(energyConsumedVal ,'f', 2, 32)
+				users.EnergyProduced = 	strconv.FormatFloat(energyProdVal ,'f', 2, 32)
 			} else{
 				energyConsumedVal := energyConsInt
 				energyProdVal := energyProdInt + energyAmtInt*(-1)
-				users.EnergyConsumed = 	strconv.Itoa(energyConsumedVal)
-				users.EnergyProduced = 	strconv.Itoa(energyProdVal)
+				users.EnergyConsumed = 	strconv.FormatFloat(energyConsumedVal ,'f', 2, 32)
+				users.EnergyProduced = 	strconv.FormatFloat(energyProdVal ,'f', 2, 32)
+
 			}
 			fmt.Println("Energy Consumed")
 			fmt.Println(users.EnergyConsumed)

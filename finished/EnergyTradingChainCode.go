@@ -676,7 +676,7 @@
 		}
 
 
-		now := time.Now()
+		//now := time.Now()
 		//Getting the date only
 		dateValue := res.Date[:len(res.Date)-6]
 		//20170406122460
@@ -710,7 +710,8 @@
 		//formattedDate, errD := time.Date(strconv.Atoi(res.Date[:len(res.Date)-10]), strconv.Atoi(res.Date[4:len(res.Date)-8]), //strconv.Atoi(res.Date[6:len(res.Date)-6]), strconv.Atoi(res.Date[8:len(res.Date)-4]), strconv.Atoi(res.Date[10:len(res.Date)-2]), //strconv.Atoi(res.Date[12:len(res.Date)]), 000000000, time.UTC)
 
 		formattedDate := time.Date(yearVal, time.Month(monthVal), dayVal, hourVal, minutesVal, secondsVal, 0, time.UTC)
-
+		
+		fmt.Println(formattedDate)
 		var gridPriceKey string
 		//gridPriceKey = res.UserID + "_" + dateValue
 		gridPriceKey =  "0_" + dateValue
@@ -824,7 +825,7 @@
 		fmt.Println(gridUserInfo)
 
 		proposal,err := GetProposals(res.ProposalID, stub)
-		now := time.Now()
+		//now := time.Now()
 		//Getting the date only
 		dateValue := res.Date[:len(res.Date)-6]
 		//20170406122460

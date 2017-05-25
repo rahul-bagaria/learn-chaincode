@@ -196,7 +196,8 @@ function string, args []string) ([]byte, error) {
 		fmt.Println("invoking SignContract " + function)
 		testBytes,err := SignContract(args[0],stub)
 		if err != nil {
-			fmt.Println("Error performing SignContract - "+err)
+			fmt.Println("Error performing SignContract - ")
+			fmt.Println(err)
 			return nil, err
 		}
 		fmt.Println("Processed SignContract successfully. ")

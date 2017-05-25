@@ -75,9 +75,9 @@ type Contract struct{
 	GridVolume string `json:"GridVolume"`
 	BatteryVolume string `json:"BatteryVolume"`
 	ProducerVolume string `json:"BatteryVolume"`
-	ChangeInGridBalance  string `json:"ChangeInGridBalance"`
+	ChangeInGridBalance     string `json:"ChangeInGridBalance"`
 	ChangeInProducerBalance string `json:"ChangeInProducerBalance"`
-	ChangeInBatteryBalance string `json:"ChangeInBatteryBalance"`
+	ChangeInBatteryBalance  string `json:"ChangeInBatteryBalance"`
 	ChangeInConsumerBalance string `json:"ChangeInConsumerBalance"`
 	ChangeInPlatformBalance string `json:"ChangeInPlatformBalance"`
 	ChangeInGridBalanceOld  string `json:"ChangeInGridBalanceOld"`
@@ -980,6 +980,12 @@ func SignContract(signContractJSON string, stub shim.ChaincodeStubInterface) ([]
 				res.ChangeInGridBalanceOld = "0"
 				res.ChangeInConsumerBalanceOld = "0"
 				res.ChangeInPlatformBalanceOld = "0"
+				res.ChangeInGridBalance = "0"
+				res.ChangeInProducerBalance = "0"
+				res.ChangeInBatteryBalance = "0"
+				res.ChangeInConsumerBalance = "0"
+				res.ChangeInPlatformBalance = "0"
+
 				body, err := json.Marshal(res)
 				if err != nil {
 					panic(err)

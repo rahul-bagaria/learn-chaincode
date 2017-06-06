@@ -112,7 +112,7 @@
 		var UserID, SmartMeterID, UserType string
 
 		if len(args) != 3 {
-			return nil, errors.New("Incorrect number of  arguments. Expecting 3 - UserID, SmartMeterID and UserType. UserType should be Prosumer, Battery or Grid")
+			return nil, errors.New("Incorrect number  of  arguments. Expecting 3 - UserID, SmartMeterID and UserType. UserType should be Prosumer, Battery or Grid")
 		}
 
 		UserID = args[0]
